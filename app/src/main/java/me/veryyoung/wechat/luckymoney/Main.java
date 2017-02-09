@@ -39,6 +39,7 @@ public class Main implements IXposedHookLoadPackage {
 
     public static final String WECHAT_PACKAGE_NAME = "com.tencent.mm";
     private static final String LUCKY_MONEY_RECEIVE_UI_CLASS_NAME = WECHAT_PACKAGE_NAME + ".plugin.luckymoney.ui.LuckyMoneyReceiveUI";
+    private static final String LUCKY_MONEY_DetailUI_UI_CLASS_NAME = WECHAT_PACKAGE_NAME + ".plugin.luckymoney.ui.LuckyMoneyDetailUI";
 
     private static final String RECEIVE_LUCKY_MONEY_REQUEST = WECHAT_PACKAGE_NAME + ".plugin.luckymoney.c.ae";
 
@@ -187,6 +188,17 @@ public class Main implements IXposedHookLoadPackage {
                             button.performClick();
                         }
                     }
+                }
+            });
+
+            findAndHookMethod(LUCKY_MONEY_DetailUI_UI_CLASS_NAME, lpparam.classLoader, VersionParam.receiveUIFunctionName, int.class, int.class, String.class, VersionParam.receiveUIParamName, new XC_MethodHook() {
+                @Override
+                protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+
+                    Activity activity = (Activity) param.thisObject;
+                    String localString1 = activity.getIntent().getStringExtra("localString1");
+                    String localString1_getLocalizedMessage = activity.getIntent().getStringExtra("localString1.getLocalizedMessage()");
+                    Toast.makeText(activity, localString1 +" , " + localString1_getLocalizedMessage, LENGTH_LONG).show();
                 }
             });
 
