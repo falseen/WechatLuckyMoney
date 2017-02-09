@@ -191,14 +191,16 @@ public class Main implements IXposedHookLoadPackage {
                 }
             });
 
-            findAndHookMethod(LUCKY_MONEY_DetailUI_UI_CLASS_NAME, lpparam.classLoader, VersionParam.receiveUIFunctionName, int.class, int.class, String.class, VersionParam.receiveUIParamName, new XC_MethodHook() {
+            findAndHookMethod(LUCKY_MONEY_DetailUI_UI_CLASS_NAME, lpparam.classLoader, "onCreate", int.class, int.class, String.class, VersionParam.receiveUIParamName, new XC_MethodHook() {
                 @Override
                 protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
                     Activity activity = (Activity) param.thisObject;
-                    String localString1 = activity.getIntent().getStringExtra("localString1");
-                    String localString1_getLocalizedMessage = activity.getIntent().getStringExtra("localString1.getLocalizedMessage()");
-                    Toast.makeText(activity, localString1 +" , " + localString1_getLocalizedMessage, LENGTH_LONG).show();
+                    String PJ_string = (String) getObjectField(param.thisObject, "PJ.findViewById(0x7f100b6b)");
+                    //String localString1_getLocalizedMessage = activity.getIntent().getStringExtra("localString1.getLocalizedMessage()");
+                    ClipboardManager cmb = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                    cmb.setText(PJ_string);
+                    Toast.makeText(activity, PJ_string +" , ", LENGTH_LONG).show();
                 }
             });
 
